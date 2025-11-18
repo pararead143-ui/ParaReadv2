@@ -1,0 +1,106 @@
+/* src/styles/ReadingMaterials.css */
+
+/* Page container */
+.materials-container {
+  display: flex;
+  background-color: #B3E6F5; /* same as Home page */
+  height: 100vh;
+  overflow: hidden;
+}
+
+.materials-container.dark {
+  background-color: #002e3b;
+}
+
+/* Content section */
+.materials-content {
+  flex: 1;
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  justify-content: flex-start;
+}
+
+/* Page title */
+.materials-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #003842;
+}
+
+.materials-container.dark .materials-title {
+  color: #a6d8e7;
+}
+
+/* Upload section */
+.upload-section {
+  margin-bottom: 20px;
+}
+
+.upload-btn {
+  background-color: #006771;
+  color: #B3E6F5;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.upload-btn input {
+  display: none;
+}
+
+/* Materials list */
+.materials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+}
+
+/* Individual material item */
+.material-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #fafafa;
+  border-radius: 10px;
+}
+
+.materials-container.dark .material-item {
+  background-color: #004a59;
+  color: #a6d8e7;
+}
+
+/* Material title */
+.material-title {
+  font-weight: 600;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-buttons button {
+  background-color: #006771;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-weight: 700;
+  color: #B3E6F5;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-buttons button:hover {
+  background-color: #0091af;
+  color: #e0f3f6;
+}

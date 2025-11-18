@@ -1,0 +1,207 @@
+/* ==============================
+   Container
+   ============================== */
+.settings-container {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(135deg, #bde2ec 0%, #e0f7fa 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #003b44;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.settings-container.dark {
+  background-color: #1c1c1c;
+  color: #e0f3f6;
+}
+
+/* ==============================
+   Content Layout
+   ============================== */
+.settings-content {
+  flex: 1;
+  padding: 50px 60px;
+  padding-left: 260px; /* space for sidebar */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  transition: all 0.3s ease;
+  background-color: inherit; /* inherit container's background */
+}
+
+/* ==============================
+   Page Title
+   ============================== */
+.settings-title {
+  font-family: "Arial Black", sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  color: inherit;
+}
+
+/* ==============================
+   Sections
+   ============================== */
+.settings-section {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.settings-container.dark .settings-section {
+  background-color: #2a2a2a;
+  color: #e0f3f6;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.settings-section h3 {
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #004f57;
+  border-left: 5px solid #0091af;
+  padding-left: 12px;
+  transition: all 0.3s ease;
+}
+
+.settings-container.dark .settings-section h3 {
+  color: #a6d8e7;
+  border-left-color: #00cfff;
+}
+
+/* ==============================
+   Settings Items
+   ============================== */
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+}
+
+.settings-item label {
+  min-width: 120px;
+  font-weight: 600;
+}
+
+.settings-item input[type="text"],
+.settings-item input[type="email"],
+.settings-item select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  flex: 1;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.settings-item input:focus,
+.settings-item select:focus {
+  outline: none;
+  border-color: #0091af;
+  box-shadow: 0 0 8px rgba(0,145,175,0.3);
+}
+
+.settings-container.dark .settings-item input,
+.settings-container.dark .settings-item select {
+  background-color: #004a59;
+  color: #a6d8e7;
+  border: 1px solid #006477;
+}
+
+/* Checkbox style for dark mode */
+.settings-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #0091af;
+}
+
+/* ==============================
+   Action Buttons
+   ============================== */
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.settings-actions button {
+  padding: 10px 24px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.settings-actions button.save-btn {
+  background-color: #006771;
+  color: #B3E6F5;
+}
+
+.settings-container.dark .settings-actions button.save-btn {
+  background-color: #0091af;
+  color: #e0f3f6;
+}
+
+.settings-actions button.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.settings-actions button.cancel-btn {
+  background-color: #ccc;
+  color: #003b44;
+}
+
+.settings-container.dark .settings-actions button.cancel-btn {
+  background-color: #555;
+  color: #e0f3f6;
+}
+
+.settings-actions button.cancel-btn:hover {
+  background-color: #777;
+}
+
+/* ==============================
+   Responsive
+   ============================== */
+@media (max-width: 1024px) {
+  .settings-content {
+    padding-left: 200px;
+    padding-right: 30px;
+  }
+
+  .settings-title {
+    font-size: 1.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .settings-title {
+    font-size: 1.6rem;
+  }
+
+  .settings-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .settings-actions {
+    justify-content: center;
+  }
+}

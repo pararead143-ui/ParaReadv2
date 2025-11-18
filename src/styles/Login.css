@@ -1,0 +1,152 @@
+    /* ===== GLOBAL PAGE BACKGROUND ===== */
+    .login-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at top, #0b6c78, #035461 70%, #024450);
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+    color: white;
+    }
+
+    /* ===== LEFT SIDE CONTENT ===== */
+    .left-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 4rem;
+    }
+
+    .title {
+        font-size: clamp(60px, 10vw, 110px);
+        font-weight: 900;
+        margin: 0 0 -25px -500px; /* keeping your left shift */
+        letter-spacing: 14px;
+        text-transform: uppercase;
+        /* Glow + depth */
+        text-shadow: 0 5px 25px rgba(0, 0, 0, 0.45);
+        /* Gradient text */
+        background: linear-gradient(90deg, #00fff0, #00bcd4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        /* Entrance animation */
+        animation: slideUp 1s ease forwards;
+    }
+
+
+    .subtitle {
+    font-size: 3rem;
+    letter-spacing: normal;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    max-width: 700px;
+    margin-left: -550px;
+    }
+
+    .logo-container {
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    }
+
+    .logo-glow {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #c4f7ff, #6ed3db);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 35px rgba(143, 243, 255, 0.6);
+    margin-left: -700px;
+    }
+
+    .logo-glow img {
+    width: 100%;
+    }
+
+    /* bottom slogan */
+    .slogan {
+    font-size: 2rem;
+    letter-spacing: 0.25rem;
+    text-align: center;
+    margin-top: -1rem;
+    opacity: 0.9;
+    }
+
+    /* ===== RIGHT LOGIN CARD ===== */
+    .login-card {
+        width: 420px;
+        height: 600px; /* ⬅️ Adjust this to how tall you want */
+        background: #a5dfe6;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        clip-path: polygon(10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%, 0 10%);
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;      /* horizontal centering */
+        justify-content: center;  /* ⬅️ vertical centering */
+        
+        margin-left: -500px;
+    }
+
+
+    .login-card h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.15rem;
+    }
+
+    /* ===== INPUT FIELDS ===== */
+    .login-input {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 20px;
+    border: none;
+    margin-top: 1rem;
+    font-size: 1rem;
+    outline: none;
+    }
+
+    .login-input::placeholder {
+    opacity: 0.7;
+    }
+
+    /* ===== LOGIN BUTTON ===== */
+    .login-btn {
+    width: 100%;
+    padding: 0.9rem;
+    margin-top: 1.5rem;
+    border-radius: 20px;
+    border: none;
+    background-color: #3e9dad;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.25s;
+    }
+
+    .login-btn:hover {
+    background-color: #2f8b9b;
+    }
+
+    /* ===== EXTRA LINKS ===== */
+    .login-links {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    color: #024f57;
+    cursor: pointer;
+    }
+
+    .login-links span {
+    text-decoration: underline;
+    cursor: pointer;
+    }

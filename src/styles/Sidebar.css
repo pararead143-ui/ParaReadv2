@@ -1,0 +1,186 @@
+/* Sidebar container */
+.sidebar {
+  background-color: #006477;
+  width: 270px;
+  height: 100vh;
+  padding: 35px 25px;
+  color: #a6d8e7;
+  font-family: 'Arial Black', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  cursor: default;
+  user-select: none;
+  position: relative;
+  overflow: visible;
+}
+
+/* Create smooth curved right edge with pseudo element */
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -135px;
+  width: 270px;
+  height: 100vh;
+  background-color: #006477;
+  border-radius: 50% / 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Dark mode sidebar */
+.sidebar.dark {
+  background-color: #004a59;
+}
+
+.sidebar.dark::after {
+  background-color: #004a59;
+}
+
+/* Sidebar heading */
+.sidebar-title {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: #a6d8e7;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 3px #003842;
+}
+
+/* Sidebar menu list */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Menu items */
+.sidebar-menu li {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a6d8e7;
+  margin-bottom: 23px;
+  padding: 9px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  letter-spacing: 0.9px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover / focus effect */
+.sidebar-menu li:hover,
+.sidebar-menu li:focus {
+  background-color: #0099cc;
+  color: #d5edf7;
+  outline: none;
+}
+
+/* Active menu item */
+.sidebar-menu li.active {
+  background-color: #0099cc;
+  color: #d5edf7;
+  font-weight: 700;
+  border-radius: 30px;
+}
+
+/* Icons for menu items using pseudo elements */
+.sidebar-menu li:nth-child(1)::before {
+  content: "\2302";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+.sidebar-menu li:nth-child(2)::before {
+  content: "\1F4C4";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+.sidebar-menu li:nth-child(3)::before {
+  content: "\2630";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+.sidebar-menu li:nth-child(4)::before {
+  content: "\23F2";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+.sidebar-menu li:nth-child(5)::before {
+  content: "\21B6";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+.sidebar-menu li:nth-child(6)::before {
+  content: "\2699";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+.sidebar-menu li:last-child::before {
+  content: "\1F512";
+  font-size: 18px;
+  margin-right: 10px;
+  color: #d5edf7;
+}
+
+/* Dark mode switch styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 23px;
+  margin-right: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider style */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: background-color 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 5px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.4s;
+}
+
+/* When checked toggles */
+input:checked + .slider {
+  background-color: #0099cc;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}

@@ -1,0 +1,171 @@
+/* Container for the entire home page */
+.home-container {
+  display: flex;
+  height: 100vh;
+  background-color: #B3E6F5; /* Light blue background */
+  font-family: 'Arial Black', Impact, sans-serif;
+  color: #006771; /* Dark teal text */
+  overflow: hidden; /* Prevent page scrolling */
+}
+
+.home-container.dark {
+  background-color: #1c1c1c;
+  color: #e0f3f6;
+}
+
+/* Sidebar is separate - this styles only home content */
+.home-content {
+  flex-grow: 1;
+  padding: 50px 80px 20px 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #B3E6F5;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.home-content.dark {
+  background-color: #222;
+  color: #e0f3f6;
+}
+
+/* Title with uppercase spaced letters */
+.home-title {
+  font-weight: 900;
+  font-size: 2.75rem;
+  letter-spacing: 8px;
+  color: #006771;
+  margin-bottom: 40px;
+  text-align: left;
+  line-height: 1.0;
+}
+
+.home-title.dark {
+  color: #B3E6F5;
+}
+
+/* Upload button styling */
+.upload-section {
+  margin-bottom: 20px;
+}
+
+/* Custom styled upload button */
+.upload-btn {
+  background-color: #eff9fa;
+  border: 1px solid #777;
+  color: #65b8c8;
+  padding: 6px 15px;
+  border-radius: 3px 0 0 3px;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-btn.dark {
+  background-color: #333;
+  border: 1px solid #555;
+  color: #e0f3f6;
+}
+
+/* Hide default input */
+.upload-btn input[type="file"] {
+  display: none;
+}
+
+/* Dropdown arrow next to upload */
+.upload-btn::after {
+  content: "▼";
+  border: 1px solid #777;
+  padding: 5px 10px;
+  border-left: 0;
+  background-color: #eff9fa;
+  border-radius: 0 3px 3px 0;
+  color: #65b8c8;
+  user-select: none;
+  cursor: pointer;
+}
+
+.upload-btn.dark::after {
+  background-color: #444;
+  border: 1px solid #555;
+  color: #e0f3f6;
+}
+
+/* Text input & output area */
+.text-input {
+  width: 90%;
+  max-width: none;
+  height: 700px;
+  background-color: #def7fa;
+  border: 1px solid #999;
+  font-family: Arial, sans-serif;
+  font-size: 1.2rem;
+  color: black;
+  padding: 15px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  resize: none;
+  letter-spacing: 0.7px;
+  line-height: 1.5;
+}
+
+.text-input.dark {
+  background-color: #333;
+  color: #e0f3f6;
+  border: 1px solid #555;
+}
+
+/* The output textarea styled same as input but readonly */
+.text-output {
+  display: none; /* Hide output on initial */
+}
+
+.text-output.dark {
+  background-color: #333;
+  color: #e0f3f6;
+  border: 1px solid #555;
+}
+
+/* Buttons container */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 90%;
+  max-width: 750px;
+  margin-top: -10px;
+}
+
+/* Style the three buttons */
+.action-buttons button {
+  background-color: #006771; /* darker teal */
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 10px 32px;
+  font-weight: 700;
+  font-family: 'Arial Black', Impact, sans-serif;
+  font-size: 1.15rem;
+  color: #B3E6F5;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.action-buttons button.dark {
+  background-color: #0091af;
+  color: #e0f3f6;
+}
+
+/* Hover effect for buttons */
+.action-buttons button:hover {
+  background-color: #0091af;
+  color: #e0f3f6;
+}

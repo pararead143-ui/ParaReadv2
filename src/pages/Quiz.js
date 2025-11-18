@@ -1,0 +1,117 @@
+import React, { useState } from "react";
+import QuizResults from "./QuizResults";
+import "../styles/Quiz.css";
+
+const QuizModal = ({ darkMode, questions = [], onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [showResults, setShowResults] = useState(false);
+
+  if (!questions || questions.length === 0) return null;
+
+  const currentQuestion = questions[currentIndex];
+
+  const handleAnswerChange = (e) => {
+    setAnswers({ ...answers, [currentQuestion.id]: e.target.value });
+  };
+
+  const handleNext = () => {
+    if (currentIndex < questions.length - 1) setCurrentIndex(currentIndex + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+  };
+
+  const handleSubmit = () => {
+    setShowResults(true);
+  };
+
+  const handleRetake = () => {
+    setAnswers({});
+    setCurrentIndex(0);
+    setShowResults(false);
+  };
+
+  if (showResults) {
+    return (
+      <QuizResults
+        darkMode={darkMode}
+        questions={questions}
+        answers={answers}
+        onClose={onClose}
+        onRetake={handleRetake}
+      />
+    );
+  }
+
+  const progressPercent = ((currentIndex + 1) / questions.length) * 100;
+
+  return (
+    <div className={`quiz-modal ${darkMode ? "dark" : ""}`}>
+      <div className="quiz-overlay" onClick={onClose}></div>
+
+      <div className="quiz-container">
+        {/* Header */}
+        <div className="quiz-header">
+          <h2>Quiz</h2>
+          <button
+            className="close-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Progress */}
+        <div className="quiz-progress">
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+          <span>
+            Question {currentIndex + 1} of {questions.length}
+          </span>
+        </div>
+
+        {/* Question */}
+        <div className="quiz-body">
+          <p className="question-text">{currentQuestion.question}</p>
+          <div className="options">
+            {currentQuestion.options.map((opt, idx) => (
+              <label key={idx} className="option">
+                <input
+                  type="radio"
+                  name={`question-${currentQuestion.id}`}
+                  value={opt}
+                  checked={answers[currentQuestion.id] === opt}
+                  onChange={handleAnswerChange}
+                />
+                <span className="custom-radio">{opt}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="quiz-footer">
+          <button onClick={handlePrev} disabled={currentIndex === 0}>
+            Previous
+          </button>
+          {currentIndex === questions.length - 1 ? (
+            <button onClick={handleSubmit}>Submit</button>
+          ) : (
+            <button onClick={handleNext}>Next</button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default QuizModal;

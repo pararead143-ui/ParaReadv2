@@ -1,0 +1,101 @@
+/* Summary page container */
+.summary-container {
+  display: flex;
+  background-color: #B3E6F5; /* same as Home page light background */
+  height: 100vh;             /* full viewport height */
+  overflow: hidden;           /* prevent scrolling */
+}
+
+/* Summary content section */
+.summary-content {
+  flex: 1;
+  padding: 40px;
+  max-width: 800px;          /* limit width */
+  margin: 0 auto;            /* center content */
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* center vertically */
+  height: 100%;              /* take full height */
+}
+
+/* Dark mode for summary page */
+.summary-container.dark {
+  background-color: #002e3b; /* dark background */
+}
+
+.summary-content.dark {
+  background-color: inherit;
+}
+
+/* Page title */
+.summary-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #003842; /* light mode text color */
+}
+
+.summary-container.dark .summary-title {
+  color: #a6d8e7; /* dark mode text color */
+}
+
+/* Section wrapper */
+.summary-section {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Text areas */
+.summary-input,
+.summary-output {
+  width: 100%;
+  height: 120px;               /* smaller height to fit on screen */
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: none;
+  font-size: 16px;
+  background: #fafafa;
+  color: #003842;
+}
+
+.summary-container.dark .summary-input,
+.summary-container.dark .summary-output {
+  background: #004a59;
+  color: #a6d8e7;
+  border: 1px solid #006477;
+}
+
+/* Buttons container (same as homepage) */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Style the buttons */
+.action-buttons button {
+  background-color: #006771; /* darker teal */
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 10px 32px;
+  font-weight: 700;
+  font-family: 'Arial Black', Impact, sans-serif;
+  font-size: 1.15rem;
+  color: #B3E6F5;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+/* Hover effect for buttons */
+.action-buttons button:hover {
+  background-color: #0091af;
+  color: #e0f3f6;
+}
