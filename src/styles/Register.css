@@ -15,39 +15,66 @@
 .left-side-register {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* align left */
+  align-items: center; /* center hero content */
   justify-content: center;
   padding-left: 4rem;
+  text-align: center; /* center text */
 }
 
+/* Animated title */
 .title-register {
   font-size: clamp(60px, 10vw, 110px);
   font-weight: 900;
   letter-spacing: 14px;
   text-transform: uppercase;
-  text-shadow: 0 5px 25px rgba(0, 0, 0, 0.45);
-  background: linear-gradient(90deg, #00fff0, #00bcd4);
+  
+  /* Gradient text animation */
+  background: linear-gradient(90deg, #00fff0, #00bcd4, #00fff0);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-  animation: slideUp 1s ease forwards;
-  margin: 0; /* no negative margins */
+
+  /* Shadow for depth */
+  text-shadow: 0 5px 25px rgba(0, 0, 0, 0.45);
+
+  /* Animate gradient */
+  animation: gradientShift 6s ease infinite;
+  margin: 0;
+  transition: all 0.4s ease;
 }
 
+.title-register:hover {
+  transform: translateY(-3px);
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+}
+
+/* Animated subtitle */
 .subtitle-register {
   font-size: 3rem;
   font-weight: 600;
-  text-align: left;
   max-width: 700px;
-  margin: 1rem 0; /* spacing below title */
+  margin: 1rem 0;
+
+  background: linear-gradient(90deg, #ffffff, #a0c4ff, #ffffff);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  animation: gradientShift 6s ease infinite;
+  transition: all 0.4s ease;
 }
 
-.logo-container-register {
-  display: flex;
-  margin: 2rem 0;
+.subtitle-register:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
+/* Floating logo */
 .logo-glow-register {
   width: 400px;
   height: 400px;
@@ -57,19 +84,51 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 35px rgba(143, 243, 255, 0.6);
+  animation: float 3s ease-in-out infinite;
 }
 
 .logo-glow-register img {
   width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-/* bottom slogan */
+.logo-glow-register img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.25));
+}
+
+/* Bottom slogan */
 .slogan-register {
   font-size: 2rem;
   letter-spacing: 0.25rem;
-  text-align: left;
+  text-align: center;
   opacity: 0.9;
   margin-top: 1rem;
+
+  /* Subtle gradient animation for slogan */
+  background: linear-gradient(90deg, #ffffff, #a0c4ff, #ffffff);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* Floating animation keyframes */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Gradient shift animation keyframes */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* ===== RIGHT REGISTER CARD ===== */
@@ -93,6 +152,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
 }
 
 /* Card title */
@@ -112,10 +177,11 @@
   margin-top: 1rem;
   font-size: 1rem;
   outline: none;
+  transition: all 0.25s ease;
 }
 
-.register-input::placeholder {
-  opacity: 0.7;
+.register-input:focus {
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
 }
 
 /* Register button */
@@ -129,11 +195,13 @@
   color: white;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: 0.25s;
+  transition: all 0.25s ease;
 }
 
 .register-btn:hover {
   background-color: #2f8b9b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 /* Extra links */
@@ -142,11 +210,16 @@
   margin-top: 1rem;
   color: #024f57;
   cursor: pointer;
+  transition: opacity 0.3s ease;
 }
 
 .register-links span {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.register-links:hover {
+  opacity: 0.7;
 }
 
 /* Responsive */
@@ -180,5 +253,13 @@
     width: 80%;
     min-height: 500px;
     margin-top: 2rem;
+
+    /* Form error highlight */
+  .form-error {
+  border: 2px solid #ff4d4f; /* red border around entire form */
+  box-shadow: 0 0 20px rgba(255, 77, 79, 0.4);
+  transition: all 0.3s ease;
+}
+
   }
 }
