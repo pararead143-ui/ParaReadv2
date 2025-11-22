@@ -3,13 +3,15 @@
 ============================ */
 .landing-container {
   width: 100%;
-  height: 100vh;
-  background: linear-gradient(135deg, #025d6f 0%, #007c91 100%);
+  min-height: 100vh;
+  height: auto;
+  background: linear-gradient(135deg, #083543 0%, #1a4ccc 100%);
   color: #ffffff;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 80px 90px;
+  gap: clamp(20px, 5vw, 120px);
+  padding: clamp(40px, 6vw, 80px) clamp(40px, 7vw, 90px);
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -38,7 +40,7 @@
   100% { opacity: 1; transform: translateX(0); }
 }
 
-/* PARAREAD TITLE WITH FIXED GRADIENT */
+/* PARAREAD TITLE */
 .landing-title {
   font-size: clamp(60px, 10vw, 110px);
   font-weight: 900;
@@ -46,15 +48,18 @@
   letter-spacing: 14px;
   text-transform: uppercase;
   text-shadow: 0 5px 25px rgba(0, 0, 0, 0.45);
-
-  /* Gradient text */
   background: linear-gradient(90deg, #00fff0, #00bcd4);
-  -webkit-background-clip: text;   /* Chrome, Safari */
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;           /* Standard */
+  background-clip: text;
   color: transparent;
-
   animation: slideUp 1s ease forwards;
+  transition: all 0.3s ease;
+}
+
+.landing-title:hover {
+  transform: translateY(-3px) scale(1.02);
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 @keyframes slideUp {
@@ -73,20 +78,26 @@
   color: #e0f7fa;
   opacity: 0;
   animation: slideUp 1s ease 0.4s forwards;
+  transition: all 0.3s ease;
+}
+
+.landing-subtitle:hover {
+  color: #ffffff;
+  letter-spacing: 4px;
 }
 
 /* JOIN BUTTON */
 .join-button {
-  width: 180px;
+  width: clamp(150px, 15vw, 180px);
   padding: 15px 0;
   border-radius: 50px;
   background: rgba(255, 255, 255, 0.28);
   border: 2px solid rgba(255, 255, 255, 0.45);
   color: #ffffff;
-  font-size: 24px;
+  font-size: clamp(18px, 2vw, 24px);
   font-weight: 700;
   cursor: pointer;
-  transition: 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease, transform 0.3s ease;
   backdrop-filter: blur(5px);
   text-transform: uppercase;
   opacity: 0;
@@ -99,9 +110,7 @@
   box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
 }
 
-/* ============================
-   LOGO + GLOW CIRCLE
-============================ */
+/* LOGO + GLOW */
 .logo-container {
   position: relative;
   width: clamp(280px, 40vw, 420px);
@@ -109,6 +118,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
 }
 
 .glow-circle {
@@ -136,34 +150,19 @@
 .logo-image {
   width: 58%;
   filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
   z-index: 2;
 }
 
 .logo-image:hover {
   transform: scale(1.05) rotateZ(-3deg);
+  filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.9));
 }
 
-/* VERTICAL "ParaRead" TEXT */
-.pararead-text {
-  position: absolute;
-  right: 8%;
-  font-size: clamp(24px, 2.5vw, 42px);
-  font-weight: 900;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  text-transform: capitalize;
-  color: #000000;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  opacity: 0.9;
-}
-
-/* ============================
-   BOTTOM TEXT (TAGLINE)
-============================ */
+/* BOTTOM TAGLINE */
 .bottom-text {
   position: absolute;
-  bottom: 65px;
+  bottom: clamp(30px, 6vw, 65px);
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(18px, 2vw, 30px);
@@ -174,6 +173,7 @@
   text-shadow: 0 3px 15px rgba(0, 0, 0, 0.45);
   color: #e0f7fa;
   opacity: 0.95;
+  transition: all 0.3s ease;
 }
 
 .bottom-text::after {
@@ -200,7 +200,7 @@
   .landing-container {
     flex-direction: column;
     justify-content: center;
-    padding: 60px 40px;
+    gap: clamp(40px, 10vw, 100px);
   }
   .content-left {
     max-width: 90%;
@@ -222,8 +222,8 @@
     font-size: clamp(20px, 5vw, 32px);
   }
   .join-button {
-    font-size: 20px;
-    width: 150px;
+    font-size: clamp(16px, 4vw, 20px);
+    width: clamp(130px, 25vw, 150px);
   }
   .logo-container {
     width: 60vw;
