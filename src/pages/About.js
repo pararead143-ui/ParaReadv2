@@ -9,16 +9,16 @@ const About = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
 
       <div className="about-content">
         <div className="about-section">
-          <h1 className="about-title">About ParaRead</h1>
+          <h1 className="about-title">About <span className="highlight">ParaRead</span></h1>
 
-          <p>
+          <p className="about-description">
             <strong>ParaRead</strong> is an interactive reading comprehension platform
             designed for Senior High School students. Our goal is to help students read smarter,
             understand better, and retain knowledge more effectively.
           </p>
 
-          <h3>Key Features</h3>
-          <ul>
+          <h3 className="section-heading">Key Features</h3>
+          <ul className="features-list">
             <li>Step-by-step reading segmentation for easier comprehension.</li>
             <li>Automated summary generation to help students review key points.</li>
             <li>Interactive quizzes to test understanding and retention.</li>
@@ -26,15 +26,15 @@ const About = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
             <li>Dark mode support for comfortable reading at night.</li>
           </ul>
 
-          <h3>Our Mission</h3>
-          <p>
+          <h3 className="section-heading">Our Mission</h3>
+          <p className="about-description">
             We aim to enhance students’ reading experience and academic performance
             through innovative technology, making learning both effective and enjoyable.
           </p>
 
-          <h3>Contact</h3>
-          <p>Email: support@pararead.com</p>
-          <p>Website: www.pararead.com</p>
+          <h3 className="section-heading">Contact</h3>
+          <p className="about-description">Email: <a href="mailto:support@pararead.com">support@pararead.com</a></p>
+          <p className="about-description">Website: <a href="https://www.pararead.com" target="_blank">www.pararead.com</a></p>
         </div>
       </div>
     </div>
