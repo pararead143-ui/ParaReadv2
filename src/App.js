@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Register";
 import Landing from "./pages/Landing";
@@ -9,17 +9,16 @@ import Readings from "./pages/Readings";
 import ViewReading from "./pages/ViewReading";
 import Settings from "./pages/Settings";
 import Quiz from "./pages/Quiz";
-import About from "./pages/About"; // ✅ Added About
+import About from "./pages/About";
 import { refreshTokenIfExpired } from "./util/token";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // ✅ Named import
 
 function App() {
   const [authChecked, setAuthChecked] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // ✅ Dark mode state
   const [darkMode, setDarkMode] = useState(false);
-  const toggleDarkMode = () => setDarkMode(prev => !prev);
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const checkLogin = () => {
     const token = localStorage.getItem("access");
@@ -35,11 +34,24 @@ function App() {
     }
   };
 
+function SummaryWrapper(props) {
+  const { id } = useParams();
+  return <Summary {...props} materialId={id} />;
+}
+
   useEffect(() => {
-    refreshTokenIfExpired().finally(() => {
-      setLoggedIn(checkLogin());
-      setAuthChecked(true);
-    });
+    const initAuth = async () => {
+      try {
+        await refreshTokenIfExpired(); // wait for token refresh
+      } catch (err) {
+        console.log("Token refresh failed:", err);
+      } finally {
+        setLoggedIn(checkLogin());
+        setAuthChecked(true);
+      }
+    };
+
+    initAuth();
 
     const handleStorageChange = () => setLoggedIn(checkLogin());
     window.addEventListener("storage", handleStorageChange);
@@ -89,11 +101,13 @@ function App() {
           path="/settings"
           element={loggedIn ? <Settings darkMode={darkMode} toggleDarkMode={toggleDarkMode} setLoggedIn={setLoggedIn} /> : <Navigate to="/login" replace />}
         />
-
-        {/* About Page */}
         <Route
           path="/about"
           element={loggedIn ? <About darkMode={darkMode} toggleDarkMode={toggleDarkMode} setLoggedIn={setLoggedIn} /> : <Navigate to="/login" replace />}
+        />
+        <Route
+        path="/summary/:id"
+        element={loggedIn ? <SummaryWrapper darkMode={darkMode} toggleDarkMode={toggleDarkMode} setLoggedIn={setLoggedIn} /> : <Navigate to="/login" replace />}
         />
 
         {/* Catch-all */}
