@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QuizResults from "./QuizResults";
 import "../styles/Quiz.css";
 
@@ -7,12 +7,29 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
   const [answers, setAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
 
-  if (!questions || questions.length === 0) return null;
+  // Reset state when questions change
+  useEffect(() => {
+    setCurrentIndex(0);
+    setAnswers({});
+    setShowResults(false);
+  }, [questions]);
+
+  if (!questions || questions.length === 0) {
+    return (
+      <div className={`quiz-modal ${darkMode ? "dark" : ""}`}>
+        <div className="quiz-overlay" onClick={onClose}></div>
+        <div className="quiz-container">
+          <p>Loading quiz...</p>
+        </div>
+      </div>
+    );
+  }
 
   const currentQuestion = questions[currentIndex];
 
   const handleAnswerChange = (e) => {
-    setAnswers({ ...answers, [currentQuestion.id]: e.target.value });
+    const id = Number(currentQuestion.id); // ensure numeric key
+    setAnswers({ ...answers, [id]: e.target.value });
   };
 
   const handleNext = () => {
@@ -46,6 +63,8 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
   }
 
   const progressPercent = ((currentIndex + 1) / questions.length) * 100;
+  const currentId = Number(currentQuestion.id);
+  const hasAnswered = answers[currentId] !== undefined;
 
   return (
     <div className={`quiz-modal ${darkMode ? "dark" : ""}`}>
@@ -87,9 +106,9 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
               <label key={idx} className="option">
                 <input
                   type="radio"
-                  name={`question-${currentQuestion.id}`}
+                  name={`question-${currentId}`}
                   value={opt}
-                  checked={answers[currentQuestion.id] === opt}
+                  checked={answers[currentId] === opt}
                   onChange={handleAnswerChange}
                 />
                 <span className="custom-radio">{opt}</span>
@@ -104,9 +123,13 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
             Previous
           </button>
           {currentIndex === questions.length - 1 ? (
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit} disabled={!hasAnswered}>
+              Submit
+            </button>
           ) : (
-            <button onClick={handleNext}>Next</button>
+            <button onClick={handleNext} disabled={!hasAnswered}>
+              Next
+            </button>
           )}
         </div>
       </div>
