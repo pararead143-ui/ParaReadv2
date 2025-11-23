@@ -192,12 +192,26 @@ def generate_quiz(request, material_id):
     except Material.DoesNotExist:
         return Response({"error": "Material not found"}, status=404)
 
+    # Extract the summary string from the dict
+    summary_text = material.summary_data.get("summary", "") if isinstance(material.summary_data, dict) else ""
+
+    if not summary_text.strip():
+        return Response(
+            {"error": "No summary available to generate a quiz."},
+            status=400
+        )
+
     # Generate quiz from the summary
-    quiz_result = generate_quiz_from_summary(material.summary_data, num_questions=5)
+    quiz_result = generate_quiz_from_summary(summary_text, num_questions=5)
+
+    if not quiz_result:
+        return Response(
+            {"error": "Quiz could not be generated from the summary."},
+            status=500
+        )
 
     # Save quiz in the material
     material.quiz_data = quiz_result
     material.save()
 
     return Response({"quiz": quiz_result})
-
