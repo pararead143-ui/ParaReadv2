@@ -143,35 +143,45 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
   };
 
   // --- Generate Quiz ---
-  const handleTakeQuiz = async () => {
-    if (!currentMaterialId) {
-      alert("No material selected!");
-      return;
+const handleTakeQuiz = async () => {
+  if (!currentMaterialId) {
+    alert("No material selected!");
+    return;
+  }
+
+  setQuizLoading(true);
+
+  try {
+    const token = localStorage.getItem("access");
+    const res = await axios.post(
+      `/materials/${currentMaterialId}/generate-quiz/`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    console.log("🔍 Quiz API response:", res.data);
+
+    // Accept ANY valid field name the backend may return
+    const quizData =
+      res.data.quiz ??
+      res.data.questions ??
+      res.data.data ??
+      res.data.result ??
+      null;
+
+    if (quizData && Array.isArray(quizData) && quizData.length > 0) {
+      setQuestions(quizData);
+      setShowQuiz(true);
+    } else {
+      alert("Quiz could not be generated. Empty or invalid response.");
     }
-
-    setQuizLoading(true);
-
-    try {
-      const token = localStorage.getItem("access");
-      const res = await axios.post(
-        `/materials/${currentMaterialId}/generate-quiz/`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      if (res.data.quiz) {
-        setQuestions(res.data.quiz);
-        setShowQuiz(true);
-      } else {
-        alert("Quiz could not be generated.");
-      }
-    } catch (err) {
-      console.error("Error generating quiz:", err);
-      alert("Network error or invalid summary.");
-    } finally {
-      setQuizLoading(false);
-    }
-  };
+  } catch (err) {
+    console.error("Error generating quiz:", err);
+    alert("Network error or invalid summary.");
+  } finally {
+    setQuizLoading(false);
+  }
+};
 
   return (
     <div className={`summary-page ${darkMode ? "dark" : ""}`}>
