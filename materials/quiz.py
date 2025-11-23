@@ -1,23 +1,34 @@
 import os
 import requests
 import json
+import re
 
 GROQ_QUIZ_KEY = os.getenv("GROQ_QUIZ_KEY")
 GROQ_API_BASE = os.getenv("GROQ_API_BASE")
 MODEL = os.getenv("MODEL")
 
 def generate_quiz_from_summary(summary_text, num_questions=5):
-    if not summary_text:
-        return []
-
-    prompt = f"""
-    Generate exactly {num_questions} multiple-choice questions based on the following summary.
-    Each question should have options A-D and indicate the correct answer.
-    Return the output as a JSON array of objects with:
+    """
+    Generate multiple-choice questions from a summary using Groq API.
+    Returns a list of questions with fields:
     - id (int)
     - question (str)
-    - options (array of 4 strings)
-    - answer (str)
+    - options (list of str)
+    - correctAnswer (str, one of "A", "B", "C", "D")
+    """
+    if not summary_text or summary_text.strip() == "":
+        return None
+
+    prompt = f"""
+    Generate exactly {num_questions} multiple-choice questions from the summary.
+    Each question must have:
+    {{
+      "id": 1,
+      "question": "...",
+      "options": ["A...", "B...", "C...", "D..."],
+      "answer": "A"
+    }}
+    RETURN ONLY A VALID JSON ARRAY. NO EXTRA TEXT.
 
     Summary:
     {summary_text}
@@ -28,26 +39,39 @@ def generate_quiz_from_summary(summary_text, num_questions=5):
         "Content-Type": "application/json"
     }
 
-    data = {
+    payload = {
         "model": MODEL,
-        "input": prompt
+        "messages": [{"role": "user", "content": prompt}]
     }
 
     try:
-        response = requests.post(f"{GROQ_API_BASE}/completions", headers=headers, json=data)
+        response = requests.post(
+            f"{GROQ_API_BASE}/chat/completions",
+            headers=headers,
+            json=payload
+        )
         response.raise_for_status()
         result = response.json()
 
-        # Groq sometimes returns a field called 'output_text' or 'output'
-        text_output = result.get("output_text") or result.get("output") or ""
-        
-        # Try to parse JSON safely
-        questions = json.loads(text_output)
-        return questions
+        output_text = result["choices"][0]["message"]["content"]
 
-    except json.JSONDecodeError:
-        print("Error parsing JSON from Groq response:", text_output)
-        return []
+        # Remove ```json ... ``` code fences if present
+        output_text = re.sub(r"^```json|```$", "", output_text.strip(), flags=re.MULTILINE)
+
+        # Parse JSON safely
+        try:
+            questions = json.loads(output_text)
+
+            # Convert "answer" -> "correctAnswer" for frontend
+            for q in questions:
+                q["correctAnswer"] = q.pop("answer", None)
+
+            return questions
+
+        except json.JSONDecodeError:
+            print("❌ Groq returned invalid JSON:", output_text)
+            return None
+
     except requests.RequestException as e:
-        print("Error generating quiz:", e)
-        return []
+        print("❌ Error calling Groq:", e)
+        return None
