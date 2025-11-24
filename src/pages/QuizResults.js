@@ -1,20 +1,23 @@
 import React from "react";
 import "../styles/Quiz.css";
 
-const QuizResults = ({ darkMode, questions = [], answers, onClose, onRetake }) => {
+const QuizResults = ({ darkMode, questions = [], answers = {}, onClose, onRetake }) => {
   if (!questions || questions.length === 0) return null;
 
-  // Add `correctAnswer` for each question to match your API
-  const quizWithCorrect = questions.map(q => ({
-    ...q,
-    correctAnswer: q.answer // use the field returned from your backend
+  // Use backend-provided correctAnswer letter
+  const quizWithCorrect = questions.map((q, index) => ({
+    id: q.id ?? index,
+    question: q.question ?? "",
+    options: q.options ?? [],
+    correctAnswer: (q.correctAnswer || "").toUpperCase()
   }));
 
   // Calculate score
   const calculateScore = () => {
     let score = 0;
-    quizWithCorrect.forEach(q => {
-      if (answers[q.id] === q.correctAnswer) score++;
+    quizWithCorrect.forEach((q) => {
+      const userAnswer = (answers[q.id] || "").toUpperCase();
+      if (userAnswer === q.correctAnswer) score++;
     });
     return score;
   };
@@ -41,46 +44,51 @@ const QuizResults = ({ darkMode, questions = [], answers, onClose, onRetake }) =
           </button>
         </div>
 
-        {/* Score and questions */}
+        {/* Score */}
         <div className="quiz-body" style={{ maxHeight: "400px", overflowY: "auto" }}>
-          <h3>Your Score: {score} / {quizWithCorrect.length} ({percentage}%)</h3>
+          <h3>
+            Your Score: {score} / {quizWithCorrect.length} ({percentage}%)
+          </h3>
           {percentage >= 70 ? (
             <p style={{ color: "green" }}>Great job! 🎉</p>
           ) : (
             <p style={{ color: "red" }}>Keep practicing! 💡</p>
           )}
 
+          {/* Questions */}
           {quizWithCorrect.map((q, idx) => {
-            const userAnswer = answers[q.id];
+            const userAnswer = (answers[q.id] || "").toUpperCase();
 
             return (
               <div key={idx} className="results-question">
                 <p className="question-text">{q.question}</p>
+
                 <ul>
                   {q.options.map((opt, i) => {
-                    const optionLetter = opt[0]; // "A", "B", etc.
-                    const correct = optionLetter === q.correctAnswer;
-                    const selected = optionLetter === userAnswer;
+                    const letter = String.fromCharCode(65 + i); // "A", "B", "C", "D"
+                    const isCorrect = letter === q.correctAnswer;
+                    const isSelected = letter === userAnswer;
 
                     let style = {};
-                    if (correct) style = { color: "green", fontWeight: "bold" };
-                    else if (selected && !correct)
+                    if (isCorrect) style = { color: "green", fontWeight: "bold" };
+                    else if (isSelected && !isCorrect)
                       style = { color: "red", textDecoration: "line-through" };
 
                     return (
                       <li key={i} style={style}>
-                        {opt} {correct ? "✅" : selected && !correct ? "❌" : ""}
+                        {opt} {isCorrect ? "✅" : isSelected && !isCorrect ? "❌" : ""}
                       </li>
                     );
                   })}
                 </ul>
+
                 <hr />
               </div>
             );
           })}
         </div>
 
-        {/* Actions */}
+        {/* Footer */}
         <div className="quiz-footer">
           <button onClick={onRetake}>Retake Quiz</button>
           <button onClick={onClose}>Close</button>
