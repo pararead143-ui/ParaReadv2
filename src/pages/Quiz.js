@@ -27,9 +27,11 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
 
   const currentQuestion = questions[currentIndex];
 
+  // Store user's selected answer as letter ("A", "B", etc.)
   const handleAnswerChange = (e) => {
-    const id = Number(currentQuestion.id); // ensure numeric key
-    setAnswers({ ...answers, [id]: e.target.value });
+    const id = currentQuestion.id;
+    const letter = e.target.value.toUpperCase();
+    setAnswers({ ...answers, [id]: letter });
   };
 
   const handleNext = () => {
@@ -63,7 +65,7 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
   }
 
   const progressPercent = ((currentIndex + 1) / questions.length) * 100;
-  const currentId = Number(currentQuestion.id);
+  const currentId = currentQuestion.id;
   const hasAnswered = answers[currentId] !== undefined;
 
   return (
@@ -88,10 +90,7 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
         {/* Progress */}
         <div className="quiz-progress">
           <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${progressPercent}%` }}
-            />
+            <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
           </div>
           <span>
             Question {currentIndex + 1} of {questions.length}
@@ -101,23 +100,27 @@ const QuizModal = ({ darkMode, questions = [], onClose }) => {
         {/* Question */}
         <div className="quiz-body">
           <p className="question-text">{currentQuestion.question}</p>
+
           <div className="options">
-            {currentQuestion.options.map((opt, idx) => (
-              <label key={idx} className="option">
-                <input
-                  type="radio"
-                  name={`question-${currentId}`}
-                  value={opt}
-                  checked={answers[currentId] === opt}
-                  onChange={handleAnswerChange}
-                />
-                <span className="custom-radio">{opt}</span>
-              </label>
-            ))}
+            {currentQuestion.options.map((opt, i) => {
+              const letter = String.fromCharCode(65 + i); // "A", "B", "C", "D"
+              return (
+                <label key={i} className="option">
+                  <input
+                    type="radio"
+                    name={`question-${currentId}`}
+                    value={letter}
+                    checked={answers[currentId] === letter}
+                    onChange={handleAnswerChange}
+                  />
+                  <span className="custom-radio">{opt}</span>
+                </label>
+              );
+            })}
           </div>
         </div>
 
-        {/* Navigation Buttons */}
+        {/* Navigation */}
         <div className="quiz-footer">
           <button onClick={handlePrev} disabled={currentIndex === 0}>
             Previous
