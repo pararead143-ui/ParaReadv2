@@ -7,7 +7,9 @@
   font-family: 'Segoe UI', sans-serif;
   transition: all 0.3s ease;
   background-color: #B3E6F5; /* light mode */
-  overflow: hidden; /* hide overflow outside sidebar/content */
+
+  /* ✅ keep layout fixed; scroll happens in content */
+  overflow: hidden;
 }
 
 .materials-container.dark {
@@ -16,38 +18,40 @@
 }
 
 /* ==============================
-   Sidebar (assumes fixed width in JS/CSS)
-   ============================== */
-
-/* ==============================
    Content section (scrollable)
    ============================== */
 .materials-content {
   flex: 1;
   display: flex;
   flex-direction: column;
+
   padding: 40px 60px;
   padding-left: 10px; /* adjust for sidebar width */
+
   height: 100%;
-  overflow-y: auto; /* enable vertical scroll */
+
+  /* ✅ KEY: content scrolls here */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
   gap: 20px;
   justify-content: flex-start;
+
+  /* ✅ prevents bottom from getting clipped */
+  padding-bottom: 60px;
 }
 
 /* Custom scrollbar for content */
 .materials-content::-webkit-scrollbar {
   width: 8px;
 }
-
 .materials-content::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .materials-content::-webkit-scrollbar-thumb {
   background-color: rgba(0,0,0,0.2);
   border-radius: 4px;
 }
-
 .materials-content::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0,0,0,0.35);
 }
@@ -109,11 +113,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+
   padding: 15px 20px;
   background-color: #fafafa;
   border-radius: 10px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+  /* ✅ prevent long titles from pushing buttons out */
+  min-width: 0;
 }
 
 .material-item:hover {
@@ -135,6 +144,11 @@
 
 .material-title {
   font-weight: 600;
+
+  /* ✅ handle long names nicely */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ==============================
@@ -143,6 +157,10 @@
 .action-buttons {
   display: flex;
   gap: 10px;
+
+  /* ✅ allows wrap on small screens */
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .action-buttons button {
@@ -154,6 +172,9 @@
   color: #B3E6F5;
   cursor: pointer;
   transition: all 0.2s ease;
+
+  /* ✅ consistent sizing */
+  white-space: nowrap;
 }
 
 .action-buttons button:hover {
@@ -212,6 +233,9 @@
   display: flex;
   justify-content: center;
   gap: 15px;
+
+  /* ✅ wrap on very small phones */
+  flex-wrap: wrap;
 }
 
 .btn-cancel,
@@ -257,6 +281,10 @@
   font-weight: 700;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   z-index: 1000;
+
+  /* ✅ prevent off-screen on phones */
+  max-width: calc(100vw - 40px);
+
   animation: slideIn 0.3s ease, fadeOut 0.3s ease 2s forwards;
 }
 
@@ -286,25 +314,64 @@
 /* ==============================
    Responsive
    ============================== */
-@media (max-width: 768px) {
+
+/* Tablet */
+@media (max-width: 1024px) {
   .materials-content {
-    padding: 20px;
+    padding: 28px 22px;
+    padding-left: 10px;
+    padding-bottom: 60px;
   }
 
   .materials-title {
     font-size: 24px;
   }
+}
+
+/* Phone */
+@media (max-width: 768px) {
+  .materials-content {
+    padding: 18px 14px;
+    padding-left: 10px;
+    padding-bottom: 70px;
+  }
+
+  .materials-title {
+    font-size: 22px;
+  }
+
+  /* ✅ stack row into column so buttons don’t get cut */
+  .material-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .action-buttons button {
+    flex: 1;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 420px) {
+  .upload-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
 
   .modal-box h3 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .modal-box p {
     font-size: 14px;
-  }
-
-  .btn-cancel,
-  .btn-confirm {
-    padding: 6px 20px;
   }
 }
