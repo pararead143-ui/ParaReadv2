@@ -5,7 +5,10 @@
   background-color: #B3E6F5; /* light mode background */
   font-family: 'Segoe UI', sans-serif;
   position: relative;
+
+  /* ✅ Keep sidebar consistent; content scrolls instead */
   overflow: hidden;
+
   transition: all 0.3s ease;
 }
 
@@ -20,6 +23,13 @@
   flex-direction: column;
   padding: 40px 30px;
   gap: 15px;
+
+  /* ✅ KEY FIX: allow content to scroll so buttons don’t get cut */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  /* ✅ Space so bottom buttons are never clipped */
+  padding-bottom: 60px;
 }
 
 .summary-header {
@@ -40,7 +50,7 @@
 
 .summary-subtitle {
   font-size: 14px;
-  color: #004f5a; 
+  color: #004f5a;
   max-width: 600px;
   margin: 0 auto 20px;
 }
@@ -181,9 +191,99 @@
   background: #e53935;
 }
 
-/* Responsive */
+/* =========================
+   RESPONSIVE IMPROVEMENTS
+========================= */
+
+/* Tablet and below: stack columns */
 @media (max-width: 1024px) {
+  .summary-container {
+    padding: 28px 18px;
+    padding-bottom: 60px; /* keep */
+  }
+
+  .summary-title {
+    font-size: 34px;
+    letter-spacing: 3px;
+  }
+
   .summary-body {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .summary-section {
+    padding: 16px;
+  }
+}
+
+/* Phone: tighten layout (✅ DO NOT change summary-page height/overflow) */
+@media (max-width: 600px) {
+  .summary-container {
+    padding: 20px 14px;
+    padding-bottom: 70px; /* a bit more room for buttons */
+    gap: 12px;
+  }
+
+  .summary-title {
+    font-size: 26px;
+    letter-spacing: 2px;
+  }
+
+  .summary-subtitle {
+    font-size: 13px;
+    margin: 0 auto 12px;
+    padding: 0 6px;
+  }
+
+  .summary-section {
+    border-radius: 18px;
+    padding: 14px;
+  }
+
+  .summary-input,
+  .summary-output {
+    font-size: 14px;
+    border-radius: 14px;
+    min-height: 220px; /* keeps it usable on mobile */
+  }
+
+  .preview-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .preview-actions button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .info-box {
+    margin-top: 12px;
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 420px) {
+  .summary-title {
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .summary-input,
+  .summary-output {
+    min-height: 180px;
   }
 }
