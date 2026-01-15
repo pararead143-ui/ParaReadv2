@@ -1,4 +1,6 @@
-/* ---- PAGE LAYOUT ---- */
+/* =========================
+   PAGE LAYOUT
+============================ */
 .login-page {
   display: flex;
   min-height: 100vh;
@@ -7,7 +9,9 @@
   overflow: hidden;
 }
 
-/* ---- LEFT SIDE HERO CENTERED ---- */
+/* =========================
+   LEFT SIDE HERO (CENTERED)
+============================ */
 .left-side {
   flex: 1;
   background: linear-gradient(135deg, #083543, #1a4ccc);
@@ -20,15 +24,17 @@
   padding: 80px 60px;
 }
 
+/* =========================
+   TITLE / TAGLINE / SLOGAN
+============================ */
 .app-title {
-  font-size: 72px;                 /* strong hero impact */
-  font-weight: 900;                /* bold and authoritative */
+  font-size: 72px;
+  font-weight: 900;
   margin: 0;
-  letter-spacing: 6px;             /* modern spacing */
-  text-transform: uppercase;       /* striking look */
-  text-align: center;              /* center alignment */
-  
-  /* Animated gradient text */
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-align: center;
+
   background: linear-gradient(90deg, #ffffff, #a0c4ff, #ffffff);
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -36,40 +42,24 @@
   background-clip: text;
   color: transparent;
 
-  /* Subtle shadow for depth */
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-
-  /* Smooth transition for hover */
   transition: all 0.4s ease;
-
-  /* Animate gradient continuously */
   animation: gradientShift 6s ease infinite;
 }
 
-/* Hover effect: lift and deepen shadow */
 .app-title:hover {
   transform: translateY(-3px);
   text-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
 }
 
-/* Keyframes for gradient animation */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-
-
 .app-tagline {
-  font-size: 24px;                  /* slightly larger for emphasis */
-  margin: 20px 0;                   
-  line-height: 1.5;                 /* more breathing room */
-  font-weight: 600;                 /* semi-bold for emphasis */
-  letter-spacing: 0.8px;            /* subtle spacing for modern look */
-  text-align: center;               /* center for hero alignment */
+  font-size: 24px;
+  margin: 20px 0;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-align: center;
 
-  /* Gradient text */
   background: linear-gradient(90deg, #ffffff, #a0c4ff, #ffffff);
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -77,62 +67,22 @@
   background-clip: text;
   color: transparent;
 
-  /* Subtle shadow for readability */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-
-  /* Smooth transition for hover or animation */
   transition: all 0.4s ease;
-
-  /* Animate gradient */
   animation: gradientShift 6s ease infinite;
 }
 
-/* Hover effect: lift and deepen shadow */
 .app-tagline:hover {
   transform: translateY(-2px);
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
-/* Keyframes for gradient animation */
+/* One keyframes definition only */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
-
-.logo-wrapper {
-  margin: 40px 0;
-}
-
-.login-logo {
-  width: 180px;                   /* slightly smaller for balance with hero text */
-  height: auto;
-  display: block;
-  object-fit: contain;
-  opacity: 0.95;
-  margin: 20px 0;
-
-  /* Floating animation for subtle motion */
-  animation: float 3s ease-in-out infinite;
-
-  /* Smooth transition for hover effects */
-  transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
-}
-
-/* Optional hover effect: slight scale and brightness */
-.login-logo:hover {
-  transform: scale(1.05);
-  opacity: 1;
-  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.25));
-}
-
-/* Floating keyframes */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
 
 .app-slogan {
   font-size: 18px;
@@ -143,7 +93,6 @@
   margin-top: 20px;
   text-align: center;
 
-  /* Gradient text */
   background: linear-gradient(90deg, #ffffff, #a0c4ff);
   background-size: 200% 200%;
   -webkit-background-clip: text;
@@ -151,34 +100,64 @@
   background-clip: text;
   color: transparent;
 
-  /* Subtle lift / shadow for better readability */
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-
-  /* Smooth transition for hover animation */
   transition: all 0.5s ease;
 }
 
-/* Hover effect: slightly lift and animate gradient */
 .app-slogan:hover {
   background-position: 100% 0;
   transform: translateY(-3px);
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* ---- RIGHT SIDE — GLASS LOGIN CARD ---- */
+/* =========================
+   LOGO
+============================ */
+.logo-wrapper {
+  margin: 40px 0;
+}
+
+.login-logo {
+  width: 180px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  opacity: 0.95;
+  margin: 20px 0;
+
+  animation: float 3s ease-in-out infinite;
+  transition: transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease;
+}
+
+.login-logo:hover {
+  transform: scale(1.05);
+  opacity: 1;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.25));
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* =========================
+   RIGHT SIDE — GLASS LOGIN CARD
+============================ */
 .login-card {
   flex: 1;
   max-width: 400px;
   margin: auto 60px;
   padding: 50px 40px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.15); /* semi-transparent */
-  backdrop-filter: blur(12px);           /* frosted glass */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #003366;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -189,14 +168,18 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* ---- LOGIN HEADER ---- */
+/* =========================
+   LOGIN HEADER
+============================ */
 .login-header {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 30px;
 }
 
-/* ---- FORM INPUTS ---- */
+/* =========================
+   FORM INPUTS
+============================ */
 .login-input {
   width: 100%;
   padding: 14px 16px;
@@ -220,7 +203,9 @@
   box-shadow: 0 0 12px rgba(59, 123, 255, 0.3);
 }
 
-/* ---- LOGIN BUTTON ---- */
+/* =========================
+   LOGIN BUTTON
+============================ */
 .login-btn {
   width: 100%;
   padding: 14px 16px;
@@ -241,7 +226,9 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
-/* ---- LINKS ---- */
+/* =========================
+   LINKS
+============================ */
 .login-links {
   margin-top: 14px;
   font-size: 14px;
@@ -260,22 +247,9 @@
   font-weight: 600;
 }
 
-/* ---- RESPONSIVE ---- */
-@media (max-width: 900px) {
-  .login-page {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .left-side {
-    padding: 40px 20px;
-  }
-
-  .login-card {
-    margin: 20px auto;
-    width: 90%;
-
+/* =========================
+   TOAST MESSAGE (GLOBAL)
+============================ */
 .toast-message {
   margin-top: 15px;
   padding: 12px 18px;
@@ -292,5 +266,92 @@
   100% { transform: translateY(0); opacity: 1; }
 }
 
+/* =========================
+   RESPONSIVE
+============================ */
+@media (max-width: 900px) {
+  .login-page {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
+  }
+
+  .left-side {
+    flex: none;
+    width: 100%;
+    padding: 48px 20px;
+  }
+
+  .app-title {
+    font-size: 52px;
+    letter-spacing: 4px;
+  }
+
+  .app-tagline {
+    font-size: 18px;
+  }
+
+  .login-logo {
+    width: 140px;
+  }
+
+  .app-slogan {
+    font-size: 15px;
+    max-width: 520px;
+  }
+
+  .login-card {
+    flex: none;
+    width: min(92%, 420px);
+    max-width: 420px;
+    margin: 18px auto 40px;
+    padding: 34px 22px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .left-side {
+    padding: 36px 16px;
+  }
+
+  .app-title {
+    font-size: 40px;
+    letter-spacing: 3px;
+  }
+
+  .app-tagline {
+    font-size: 16px;
+    margin: 14px 0;
+  }
+
+  .login-logo {
+    width: 120px;
+  }
+
+  .login-card {
+    width: 92%;
+    padding: 28px 18px;
+    border-radius: 16px;
+  }
+
+  .login-header {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .login-input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .login-btn {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  .login-links {
+    font-size: 13px;
   }
 }
