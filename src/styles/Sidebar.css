@@ -11,10 +11,11 @@
   display: flex;
   flex-direction: column;
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.25);
-  transition: width 0.4s ease, background 0.4s ease;
+  transition: width 0.4s ease, background 0.4s ease, padding 0.4s ease;
   position: relative;
   overflow: visible;
   border-right: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0; /* ✅ prevents sidebar from squishing */
 }
 
 .sidebar.collapsed {
@@ -42,6 +43,7 @@
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0,0,0,0.35);
   transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  z-index: 20; /* ✅ stays clickable */
 }
 
 .collapse-btn:hover {
@@ -69,6 +71,7 @@
   background: linear-gradient(135deg, #00bcd4, #0099cc);
   box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .avatar-circle img.avatar-logo {
@@ -138,6 +141,7 @@
   align-items: center;
   background-color: rgba(255,255,255,0.15);
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
 
 .sidebar-menu li:hover .icon-circle,
@@ -147,7 +151,7 @@
   box-shadow: 0 0 12px rgba(255,255,255,0.6);
 }
 
-/* Tooltip */
+/* Tooltip (only when collapsed) */
 .sidebar.collapsed .sidebar-menu li .tooltip {
   visibility: hidden;
   opacity: 0;
@@ -313,7 +317,7 @@ input:checked + .slider:before {
   box-shadow: 0 8px 22px rgba(0,0,0,0.25);
 }
 
-/* Responsive */
+/* Logout Modal Responsive */
 @media (max-width: 500px) {
   .logout-modal-content {
     width: 95%;
@@ -328,5 +332,66 @@ input:checked + .slider:before {
   .logout-btn,
   .cancel-logout-btn {
     width: 100%;
+  }
+}
+
+/* ================================
+   RESPONSIVE SIDEBAR (CONSISTENT)
+   ✅ Keeps sidebar LEFT on ALL sizes
+================================ */
+
+/* Tablet + Phone: force icon sidebar */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 90px;
+    padding: 24px 10px;
+    height: 100vh;
+  }
+
+  .sidebar-avatar {
+    justify-content: center;
+    margin-bottom: 28px;
+    gap: 0;
+  }
+
+  .avatar-name {
+    display: none;
+  }
+
+  .sidebar-menu li {
+    justify-content: center;
+    padding: 12px 10px;
+    gap: 0;
+  }
+
+  /* Hide menu labels (icons remain) */
+  .sidebar-menu li span:not(.tooltip) {
+    display: none;
+  }
+
+  .toggle-item {
+    justify-content: center;
+  }
+
+  .switch {
+    margin-left: 0;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 78px;
+    padding: 18px 8px;
+  }
+
+  .icon-circle {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar-menu li {
+    padding: 10px 8px;
+    border-radius: 22px;
   }
 }
