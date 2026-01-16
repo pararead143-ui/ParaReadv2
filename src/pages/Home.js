@@ -1,5 +1,6 @@
 // src/pages/Home.js
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import Swal from "sweetalert2"; // ✅ ADDED
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import {
@@ -36,12 +37,69 @@ const Home = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
     setTimeout(() => setShowToast(false), 2000);
   };
 
+  // ✅ ADDED: store AbortController for uploads
+  const uploadAbortRef = useRef(null);
+
+  // ✅ ADDED: abort any in-flight upload if Home unmounts
+  useEffect(() => {
+    return () => {
+      if (uploadAbortRef.current) {
+        uploadAbortRef.current.abort();
+      }
+    };
+  }, []);
+
+  // ✅ ADDED: file validation rules
+  const MAX_FILE_MB = 30;
+  const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
+
+  // You can adjust this list depending on what your backend supports
+  const ALLOWED_MIME_TYPES = new Set([
+    "application/pdf", // .pdf
+    "text/plain", // .txt
+    "application/msword", // .doc
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+    // ✅ add these
+  "image/png",
+  "image/jpeg",
+  "image/jpg",
+    
+  ]);
+
+  const showFileError = (title, text) => {
+    Swal.fire({
+      icon: "error",
+      title,
+      text,
+      confirmButtonColor: "#7b2cbf",
+    });
+  };
+
   // --------------------------
   // FILE UPLOAD (NO SAVING!)
   // --------------------------
   const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // ✅ ADDED: validate file size
+    if (file.size > MAX_FILE_BYTES) {
+      showFileError(
+        "File too large",
+        `Please upload a file smaller than ${MAX_FILE_MB}MB.`
+      );
+      // allow re-selecting the same file
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    // ✅ ADDED: validate file type
+    // Some browsers may give empty type for unknown files; treat as unsupported
+    if (!file.type || !ALLOWED_MIME_TYPES.has(file.type)) {
+      showFileError("Unsupported file", "Supported files: PDF, TXT, DOC, DOCX.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
 
     setUploadedFile(file);
     setTextInput("");
@@ -59,12 +117,19 @@ const Home = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
         return;
       }
 
+      // ✅ cancel previous upload request (if any)
+      if (uploadAbortRef.current) {
+        uploadAbortRef.current.abort();
+      }
+      uploadAbortRef.current = new AbortController();
+
       const res = await fetch(
         "http://localhost:8000/api/materials/upload-file/",
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
           body: formData,
+          signal: uploadAbortRef.current.signal,
         }
       );
 
@@ -73,12 +138,14 @@ const Home = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
 
       if (res.ok) {
         setTextInput(data.cleaned_text || "");
-        setCurrentMaterialId(null); // ensure no saving happens
+        setCurrentMaterialId(null);
         showToastMessage("File uploaded and extracted successfully!");
       } else {
         showToastMessage(data.error || "Upload failed");
       }
     } catch (err) {
+      if (err?.name === "AbortError") return;
+
       console.error(err);
       showToastMessage("Network error while uploading");
     } finally {
@@ -112,19 +179,14 @@ const Home = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
       const formatted = segmentedData
         .map(
           (seg, i) =>
-            `Segment ${i + 1}:\n${seg.segment}\n\nExplanation: ${
-              seg.explanation
-            }\nKey Terms: ${seg.key_terms.join(", ")}\nExample: ${
-              seg.example
-            }`
+            `Segment ${i + 1}:\n${seg.segment}\n\nExplanation: ${seg.explanation}\nKey Terms: ${seg.key_terms.join(
+              ", "
+            )}\nExample: ${seg.example}`
         )
         .join("\n\n--------------------------------\n\n");
 
       setTextInput(formatted);
-
-      // save material AFTER segmentation (only once)
       setCurrentMaterialId(res.data.id);
-
       showToastMessage("Segmentation completed!");
     } catch (error) {
       console.error(error);
@@ -156,6 +218,7 @@ const Home = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
     setUploadedFile(null);
     setTitleInput("");
     setCurrentMaterialId(null);
+    if (fileInputRef.current) fileInputRef.current.value = ""; // ✅ optional reset
   };
 
   // --------------------------
@@ -254,14 +317,31 @@ const Home = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
           </div>
         </div>
 
-        <div className={`work-box ${darkMode ? "dark" : ""}`}>
+        {/* ✅ has-actions class already applied */}
+        <div
+          className={`work-box ${
+            textInput.trim() ? "has-actions" : ""
+          } ${darkMode ? "dark" : ""}`}
+        >
           {textInput.trim() && (
             <div className="preview-actions">
-              <button onClick={handleCopy}>
-                <Copy size={16} /> Copy
+              {/* ✅ UPDATED: add class + wrap label in span */}
+              <button
+                className="preview-btn"
+                onClick={handleCopy}
+                aria-label="Copy"
+              >
+                <Copy size={16} />
+                <span className="btn-text">Copy</span>
               </button>
-              <button onClick={handleDownload}>
-                <Download size={16} /> Download
+
+              <button
+                className="preview-btn"
+                onClick={handleDownload}
+                aria-label="Download"
+              >
+                <Download size={16} />
+                <span className="btn-text">Download</span>
               </button>
             </div>
           )}
