@@ -1,3 +1,4 @@
+/* --- MODAL OVERLAY & CONTAINER --- */
 .quiz-modal {
   position: fixed;
   top: 0;
@@ -18,7 +19,8 @@
 .quiz-container {
   position: relative;
   max-width: 600px;
-  margin: 80px auto;
+  max-height: 80vh;           /* Ensure modal fits screen */
+  margin: 40px auto;          /* Reduce margin for taller modals */
   background-color: #ffffff;
   padding: 30px 35px;
   border-radius: 14px;
@@ -35,6 +37,7 @@
   color: #e0f3f6;
 }
 
+/* --- HEADER --- */
 .quiz-header {
   display: flex;
   justify-content: space-between;
@@ -49,6 +52,7 @@
   color: inherit;
 }
 
+/* --- PROGRESS BAR --- */
 .quiz-progress {
   display: flex;
   justify-content: space-between;
@@ -74,6 +78,27 @@
 
 .quiz-modal.dark .progress-fill {
   background-color: #00cfff;
+}
+
+/* --- QUESTION & OPTIONS --- */
+.quiz-body {
+  flex: 1;                  /* Take up remaining space */
+  overflow-y: auto;         /* Make scrollable */
+  padding-right: 10px;      /* Prevent scrollbar overlapping content */
+}
+
+.quiz-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.quiz-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 103, 113, 0.5);
+  border-radius: 4px;
+}
+
+.quiz-body::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
 }
 
 .question-text {
@@ -121,9 +146,11 @@
   border-color: #00cfff;
 }
 
+/* --- FOOTER BUTTONS --- */
 .quiz-footer {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .quiz-footer button {
@@ -144,4 +171,27 @@
 .quiz-modal.dark .quiz-footer button {
   background-color: #0091af;
   color: #e0f3f6;
+}
+
+/* --- QUIZ RESULTS --- */
+.results-question {
+  margin-bottom: 15px;
+}
+
+.results-question ul {
+  padding-left: 20px;
+  margin: 5px 0;
+}
+
+.results-question li {
+  margin-bottom: 5px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+.quiz-modal.dark hr {
+  border-top: 1px solid #444;
 }
