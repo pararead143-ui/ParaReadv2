@@ -1,13 +1,12 @@
-/* Whole screen layout */
+/* ==============================
+   Whole screen layout
+   ============================== */
 .home-container {
   display: flex;
   height: 100vh;
   background-color: #B3E6F5;
   font-family: 'Segoe UI', sans-serif;
-
-  /* ✅ Keep layout consistent; let content scroll inside */
   overflow: hidden;
-
   transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -16,7 +15,9 @@
   color: inherit;
 }
 
-/* Right content area */
+/* ==============================
+   Right content area
+   ============================== */
 .home-content {
   flex: 1;
   padding: 60px 40px 20px 40px;
@@ -25,15 +26,15 @@
   align-items: center;
   position: relative;
 
-  /* ✅ KEY FIX: content scrolls here (NOT the whole page) */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 
-  /* ✅ Prevent bottom buttons from being clipped */
   padding-bottom: 60px;
 }
 
-/* Title styling */
+/* ==============================
+   Title
+   ============================== */
 .home-title {
   font-size: 44px;
   letter-spacing: 4px;
@@ -49,7 +50,9 @@
   color: #b3e6f5;
 }
 
-/* Subtitle / tips */
+/* ==============================
+   Subtitle / tips
+   ============================== */
 .home-subtitle {
   font-size: 14px;
   margin-bottom: 25px;
@@ -84,14 +87,14 @@
   border-radius: 10px;
   font-size: 13px;
   width: 220px;
-  top: 120%; /* below the icon */
+  top: 120%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 20; /* ensure it's on top */
+  z-index: 20;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   text-align: center;
   white-space: normal;
-  pointer-events: auto; /* allow click */
+  pointer-events: auto;
 }
 
 .tooltip.dark {
@@ -102,7 +105,7 @@
 .tooltip::after {
   content: "";
   position: absolute;
-  top: -6px; /* arrow pointing to icon */
+  top: -6px;
   left: 50%;
   transform: translateX(-50%) rotate(180deg);
   border-width: 6px;
@@ -114,7 +117,9 @@
   border-color: #002e3b transparent transparent transparent;
 }
 
-/* Upload section */
+/* ==============================
+   Upload section
+   ============================== */
 .upload-section {
   margin-bottom: 25px;
   display: flex;
@@ -192,7 +197,9 @@
   background: rgba(255,255,255,0.05);
 }
 
-/* Work Box */
+/* ==============================
+   Work Box
+   ============================== */
 .work-box {
   width: 85%;
   max-width: 850px;
@@ -220,39 +227,60 @@
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* Top-right copy/download buttons */
+/* =========================================================
+   ✅ Copy/Download behavior
+   Desktop: top-right pills
+   Narrow: small floating icon buttons (like your reference)
+   ========================================================= */
+
+/* Desktop default */
 .preview-actions {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   z-index: 10;
 }
 
-.preview-actions button {
-  display: flex;
+.preview-actions .preview-btn {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   background-color: #0b616e;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 6px 12px;
-  font-size: 14px;
+  border-radius: 18px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.preview-actions button:hover {
+.preview-actions .preview-btn:hover {
   background-color: #0d7890;
   transform: translateY(-1px);
 }
 
-/* Text input */
+.preview-actions .preview-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ✅ Prevent overlay on desktop too (top padding inside textarea) */
+.work-box .text-input {
+  padding-top: 58px; /* space for top-right pills */
+}
+
+/* ==============================
+   Text input
+   ============================== */
 .text-input {
   width: 100%;
-  height: 100%;
+  flex: 1;
   border: none;
   background: transparent;
   font-size: 18px;
@@ -279,7 +307,9 @@
   color: #e0f3f6;
 }
 
-/* Right-aligned action buttons under work box */
+/* ==============================
+   Action buttons under work box
+   ============================== */
 .action-buttons-right {
   display: flex;
   justify-content: flex-end;
@@ -307,7 +337,9 @@
   transform: translateY(-2px);
 }
 
-/* Info box */
+/* ==============================
+   Info box
+   ============================== */
 .info-box {
   width: 85%;
   max-width: 850px;
@@ -329,7 +361,9 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* Floating shapes */
+/* ==============================
+   Floating shapes
+   ============================== */
 .floating-shape {
   position: absolute;
   border-radius: 50%;
@@ -355,7 +389,9 @@
 .home-container.dark .floating-shape.shape2 { background: #33c4d4; opacity: 0.1; }
 .home-container.dark .floating-shape.shape3 { background: #66e0f0; opacity: 0.1; }
 
-/* Toast Notification */
+/* ==============================
+   Toast
+   ============================== */
 .toast {
   position: fixed;
   bottom: 30px;
@@ -386,12 +422,9 @@
   100% { transform: translateY(20px); opacity: 0; }
 }
 
-/* =========================
-   RESPONSIVE — HOME CONTENT
-   (Sidebar responsiveness handled separately)
-============================ */
-
-/* Tablets / small laptops */
+/* ==============================
+   Responsive
+   ============================== */
 @media (max-width: 1024px) {
   .home-content {
     padding: 44px 24px 18px 24px;
@@ -415,25 +448,26 @@
   }
 }
 
-/* Phones + small tablets */
 @media (max-width: 768px) {
-  /* ✅ Do NOT change .home-container height/overflow; keep sidebar consistent */
   .home-content {
-    padding: 26px 16px 16px 16px;
+    padding: 18px 14px 14px 14px;
     padding-bottom: 70px;
   }
 
   .home-title {
-    font-size: 30px;
+    font-size: 26px;
     letter-spacing: 2px;
+    margin-bottom: 6px;
   }
 
   .home-subtitle {
     max-width: 92%;
+    margin-bottom: 16px;
+    font-size: 13px;
   }
 
   .upload-section {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
 
   .upload-group {
@@ -444,6 +478,11 @@
   .upload-main {
     flex: 1;
     justify-content: center;
+    padding: 10px 14px;
+  }
+
+  .upload-dropdown {
+    padding: 10px 12px;
   }
 
   .work-box,
@@ -454,35 +493,44 @@
   }
 
   .work-box {
-    height: 380px;
-    padding: 16px;
+    height: auto;
+    min-height: 420px;
+    padding: 14px;
     border-radius: 18px;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
   }
 
   .text-input {
     font-size: 16px;
     padding: 10px;
-  }
-
-  .preview-actions {
-    top: 12px;
-    right: 12px;
-    gap: 8px;
-  }
-
-  .preview-actions button {
-    padding: 6px 10px;
-    font-size: 13px;
+    min-height: 280px;
   }
 
   .action-buttons-right {
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    width: 94%;
+    max-width: 700px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    justify-content: unset;
+    margin: 12px 0 18px 0;
+  }
+
+  .action-buttons-right button:nth-child(1) {
+    grid-column: 1 / -1;
   }
 
   .action-buttons-right button {
-    width: min(260px, 100%);
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border-radius: 14px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.16);
+  }
+
+  .info-box {
+    margin-top: 8px;
+    font-size: 13px;
   }
 
   .toast {
@@ -491,32 +539,70 @@
     max-width: calc(100vw - 32px);
   }
 
-  .floating-shape.shape1 { width: 90px; height: 90px; }
-  .floating-shape.shape2 { width: 60px; height: 60px; }
-  .floating-shape.shape3 { width: 75px; height: 75px; }
+  .floating-shape.shape1 { width: 80px; height: 80px; }
+  .floating-shape.shape2 { width: 55px; height: 55px; }
+  .floating-shape.shape3 { width: 70px; height: 70px; }
 }
 
-/* Very small phones */
+/* ✅ Apply to ALL narrow viewports (Fold, small phones, narrow desktop windows) */
+@media (max-width: 520px) {
+  /* put Copy/Download bottom-right and make them small circular icons */
+  .preview-actions {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .preview-actions .preview-btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 999px;
+  }
+
+  .preview-actions .preview-btn .btn-text {
+    display: none;
+  }
+
+  .preview-actions .preview-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* reserve space at bottom so textarea never gets covered by floating buttons */
+  .work-box .text-input {
+    padding-top: 14px;     /* no need to reserve top anymore */
+    padding-bottom: 78px;  /* space for 2 floating buttons */
+  }
+}
+
 @media (max-width: 480px) {
+  .home-content {
+    padding: 14px 12px 12px 12px;
+    padding-bottom: 70px;
+  }
+
   .home-title {
-    font-size: 24px;
+    font-size: 22px;
     letter-spacing: 1px;
   }
 
   .home-subtitle {
-    font-size: 13px;
-    margin-bottom: 18px;
+    font-size: 12.5px;
+    margin-bottom: 14px;
   }
 
   .work-box {
-    height: 340px;
-    padding: 14px;
+    min-height: 380px;
+    padding: 12px;
     border-radius: 16px;
   }
 
-  .preview-actions button {
-    font-size: 12px;
-    padding: 5px 9px;
+  .text-input {
+    min-height: 250px;
+    font-size: 15px;
   }
 
   .text-counter {
@@ -524,8 +610,25 @@
   }
 
   .info-box {
-    font-size: 13px;
+    font-size: 12.5px;
     padding: 12px 14px;
     border-radius: 14px;
+  }
+}
+
+/* Extra tiny */
+@media (max-width: 360px) {
+  .preview-actions .preview-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .preview-actions .preview-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .work-box .text-input {
+    padding-bottom: 72px;
   }
 }
