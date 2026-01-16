@@ -1,5 +1,6 @@
 // src/pages/SummaryPage.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Swal from "sweetalert2"; // ✅ ADDED
 import Sidebar from "./Sidebar";
 import QuizModal from "./Quiz";
 import { FiFileText, FiEdit2, FiTrash2, FiCopy, FiDownload } from "react-icons/fi";
@@ -17,7 +18,18 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
   const [loading, setLoading] = useState(true);
   const [quizLoading, setQuizLoading] = useState(false);
 
-  // --- Load material if ID exists ---
+  const [isSummarizing, setIsSummarizing] = useState(false);
+
+  const summarizeAbortRef = useRef(null);
+  const quizAbortRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (summarizeAbortRef.current) summarizeAbortRef.current.abort();
+      if (quizAbortRef.current) quizAbortRef.current.abort();
+    };
+  }, []);
+
   useEffect(() => {
     const fetchMaterial = async () => {
       if (!currentMaterialId) {
@@ -46,7 +58,6 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
     fetchMaterial();
   }, [currentMaterialId]);
 
-  // --- Handle paste (detect JSON with materialId) ---
   const handlePaste = (e) => {
     try {
       const pastedData = e.clipboardData.getData("text");
@@ -68,7 +79,6 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
 
   if (loading) return <p>Loading material...</p>;
 
-  // --- Summarize ---
   const handleSummarize = async () => {
     if (!originalText.trim()) return;
 
@@ -78,7 +88,12 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
       return;
     }
 
+    setIsSummarizing(true);
+
     try {
+      if (summarizeAbortRef.current) summarizeAbortRef.current.abort();
+      summarizeAbortRef.current = new AbortController();
+
       const res = await fetch("http://localhost:8000/api/materials/summarize/", {
         method: "POST",
         headers: {
@@ -86,6 +101,7 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ text: originalText, material_id: currentMaterialId }),
+        signal: summarizeAbortRef.current.signal,
       });
 
       const data = await res.json();
@@ -94,7 +110,6 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
         let formattedSummary = data.summary.replace(/\\n/g, "\n").replace(/- /g, "\n- ");
         setSummaryText(formattedSummary);
 
-        // Save new material ID if it was created
         if (!currentMaterialId && data.id) {
           setCurrentMaterialId(data.id);
         }
@@ -102,12 +117,15 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
         alert(data.error || "Failed to summarize.");
       }
     } catch (err) {
+      if (err?.name === "AbortError") return;
+
       console.error(err);
       alert("Network error while summarizing.");
+    } finally {
+      setIsSummarizing(false);
     }
   };
 
-  // --- Clear ---
   const handleClear = () => {
     setOriginalText("");
     setSummaryText("");
@@ -116,7 +134,6 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
     setShowQuiz(false);
   };
 
-  // --- Copy as JSON with materialId ---
   const handleCopy = () => {
     if (!summaryText) return;
 
@@ -130,7 +147,6 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
     setTimeout(() => setToastVisible(false), 1500);
   };
 
-  // --- Download ---
   const handleDownload = () => {
     if (!summaryText) return;
     const element = document.createElement("a");
@@ -142,46 +158,60 @@ const SummaryPage = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
     document.body.removeChild(element);
   };
 
-  // --- Generate Quiz ---
-const handleTakeQuiz = async () => {
-  if (!currentMaterialId) {
-    alert("No material selected!");
-    return;
-  }
-
-  setQuizLoading(true);
-
-  try {
-    const token = localStorage.getItem("access");
-    const res = await axios.post(
-      `/materials/${currentMaterialId}/generate-quiz/`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    console.log("🔍 Quiz API response:", res.data);
-
-    // Accept ANY valid field name the backend may return
-    const quizData =
-      res.data.quiz ??
-      res.data.questions ??
-      res.data.data ??
-      res.data.result ??
-      null;
-
-    if (quizData && Array.isArray(quizData) && quizData.length > 0) {
-      setQuestions(quizData);
-      setShowQuiz(true);
-    } else {
-      alert("Quiz could not be generated. Empty or invalid response.");
+  const handleTakeQuiz = async () => {
+    if (!currentMaterialId) {
+      Swal.fire({
+        icon: "error",
+        title: "No material selected",
+        text: "Please summarize or select a material first before taking a quiz.",
+        confirmButtonColor: "#7b2cbf",
+      });
+      return;
     }
-  } catch (err) {
-    console.error("Error generating quiz:", err);
-    alert("Network error or invalid summary.");
-  } finally {
-    setQuizLoading(false);
-  }
-};
+
+    setQuizLoading(true);
+
+    try {
+      const token = localStorage.getItem("access");
+
+      if (quizAbortRef.current) quizAbortRef.current.abort();
+      quizAbortRef.current = new AbortController();
+
+      const res = await axios.post(
+        `/materials/${currentMaterialId}/generate-quiz/`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: quizAbortRef.current.signal,
+        }
+      );
+
+      console.log("🔍 Quiz API response:", res.data);
+
+      const quizData =
+        res.data.quiz ??
+        res.data.questions ??
+        res.data.data ??
+        res.data.result ??
+        null;
+
+      if (quizData && Array.isArray(quizData) && quizData.length > 0) {
+        setQuestions(quizData);
+        setShowQuiz(true);
+      } else {
+        alert("Quiz could not be generated. Empty or invalid response.");
+      }
+    } catch (err) {
+      if (err?.name === "AbortError" || err?.code === "ERR_CANCELED") {
+        return;
+      }
+
+      console.error("Error generating quiz:", err);
+      alert("Network error or invalid summary.");
+    } finally {
+      setQuizLoading(false);
+    }
+  };
 
   return (
     <div className={`summary-page ${darkMode ? "dark" : ""}`}>
@@ -220,6 +250,7 @@ const handleTakeQuiz = async () => {
               <button onClick={handleCopy}><FiCopy /> Copy</button>
               <button onClick={handleDownload}><FiDownload /> Download</button>
             </div>
+
             <textarea
               className="summary-output"
               value={summaryText}
@@ -227,6 +258,11 @@ const handleTakeQuiz = async () => {
               placeholder="Your summary will appear here..."
               style={{ whiteSpace: "pre-wrap" }}
             />
+
+            {isSummarizing && (
+              <div className="processing">Summarizing...</div>
+            )}
+
             <div className={`text-counter ${darkMode ? "dark" : ""}`}>
               {summaryText.length} characters
             </div>
@@ -238,11 +274,17 @@ const handleTakeQuiz = async () => {
         </div>
 
         <div className="action-buttons">
-          <button onClick={handleSummarize}><FiFileText /> Summarize</button>
+          <button onClick={handleSummarize} disabled={isSummarizing}>
+            <FiFileText /> {isSummarizing ? "Summarizing..." : "Summarize"}
+          </button>
+
           <button onClick={handleTakeQuiz} disabled={quizLoading}>
             <FiEdit2 /> {quizLoading ? "Generating..." : "Take Quiz"}
           </button>
-          <button onClick={handleClear} className="clear-btn"><FiTrash2 /> Clear</button>
+
+          <button onClick={handleClear} className="clear-btn">
+            <FiTrash2 /> Clear
+          </button>
         </div>
       </div>
 
