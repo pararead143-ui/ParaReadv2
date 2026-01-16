@@ -2,18 +2,15 @@
   display: flex;
   height: 100vh;
   width: 100%;
-  background-color: #B3E6F5; /* light mode background */
+  background-color: #B3E6F5;
   font-family: 'Segoe UI', sans-serif;
   position: relative;
-
-  /* ✅ Keep sidebar consistent; content scrolls instead */
   overflow: hidden;
-
   transition: all 0.3s ease;
 }
 
 .summary-page.dark {
-  background: linear-gradient(135deg, #001f2d, #00314a); /* deeper, immersive dark gradient */
+  background: linear-gradient(135deg, #001f2d, #00314a);
   color: #e0f3f6;
 }
 
@@ -23,12 +20,8 @@
   flex-direction: column;
   padding: 40px 30px;
   gap: 15px;
-
-  /* ✅ KEY FIX: allow content to scroll so buttons don’t get cut */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-
-  /* ✅ Space so bottom buttons are never clipped */
   padding-bottom: 60px;
 }
 
@@ -40,12 +33,12 @@
   font-size: 44px;
   letter-spacing: 4px;
   font-weight: 700;
-  color: #005660; /* light mode */
+  color: #005660;
   margin-bottom: 8px;
 }
 
 .summary-title.dark {
-  color: #a6e1f2; /* soft teal for dark mode */
+  color: #a6e1f2;
 }
 
 .summary-subtitle {
@@ -65,10 +58,12 @@
   gap: 15px;
 }
 
+/* ✅ UPDATED: make this a positioning context for the floating icons */
 .summary-section {
   flex: 1;
   display: flex;
   flex-direction: column;
+  position: relative; /* ✅ ADDED */
   background: rgba(255, 255, 255, 0.25);
   border-radius: 22px;
   padding: 18px;
@@ -79,7 +74,7 @@
 }
 
 .summary-page.dark .summary-section {
-  background: rgba(0,30,45,0.45); /* more opaque for contrast */
+  background: rgba(0,30,45,0.45);
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   border: 1.5px solid rgba(102,196,212,0.6);
 }
@@ -93,26 +88,23 @@
   border: 1.5px solid rgba(0,86,96,0.25);
   margin-top: 8px;
   font-size: 15px;
-  color: #004f5a;
+  color: #050c0d;
   box-shadow: inset 0 4px 12px rgba(0,0,0,0.05);
   background: rgba(255,255,255,0.2);
   transition: all 0.25s ease;
 }
 
-.summary-input:focus,
-.summary-output:focus {
-  border-color: #0b616e;
-  box-shadow: 0 0 12px rgba(11,97,110,0.3);
-  outline: none;
-}
-
 .summary-page.dark .summary-input,
 .summary-page.dark .summary-output {
   background: rgba(0,60,75,0.3);
-  color: #d0f0fb;
+  color: #f2f7f9;
   border: 1.5px solid #0090b0;
   box-shadow: inset 0 4px 15px rgba(0,0,0,0.25);
 }
+
+/* =========================
+   Copy / Download
+   ========================= */
 
 .preview-actions {
   display: flex;
@@ -126,7 +118,7 @@
   font-size: 13px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   cursor: pointer;
   border: none;
   background: #0b616e;
@@ -139,7 +131,15 @@
   transform: translateY(-1px);
 }
 
-/* Centered info box */
+.preview-actions button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =========================
+   Info + Action Buttons
+   ========================= */
+
 .info-box {
   text-align: center;
   font-size: 13px;
@@ -154,9 +154,8 @@
 
 .info-box.dark {
   background: rgba(0,30,45,0.4);
-  color: #d0f0fb;
+  color: #fcfcfc;
   border-color: #00c0f0;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
 }
 
 .action-buttons {
@@ -187,103 +186,160 @@
   background: #b71c1c;
 }
 
-.action-buttons .clear-btn:hover {
-  background: #e53935;
-}
-
 /* =========================
-   RESPONSIVE IMPROVEMENTS
-========================= */
+   RESPONSIVE
+   ========================= */
 
-/* Tablet and below: stack columns */
 @media (max-width: 1024px) {
-  .summary-container {
-    padding: 28px 18px;
-    padding-bottom: 60px; /* keep */
+  .summary-body {
+    flex-direction: column;
   }
 
   .summary-title {
     font-size: 34px;
-    letter-spacing: 3px;
-  }
-
-  .summary-body {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .summary-section {
-    padding: 16px;
   }
 }
 
-/* Phone: tighten layout (✅ DO NOT change summary-page height/overflow) */
+/* =========================
+   ✅ MOBILE: maximize space (phones)
+   keep bottom-right icons
+   ========================= */
 @media (max-width: 600px) {
+  /* tighter overall padding so content gets taller */
   .summary-container {
-    padding: 20px 14px;
-    padding-bottom: 70px; /* a bit more room for buttons */
-    gap: 12px;
+    padding: 16px 12px;
+    gap: 10px;
+    padding-bottom: 18px;
+  }
+
+  /* compact header */
+  .summary-header {
+    margin-bottom: 0;
   }
 
   .summary-title {
-    font-size: 26px;
+    font-size: 22px;
     letter-spacing: 2px;
+    margin-bottom: 4px;
   }
 
   .summary-subtitle {
-    font-size: 13px;
-    margin: 0 auto 12px;
-    padding: 0 6px;
-  }
-
-  .summary-section {
-    border-radius: 18px;
-    padding: 14px;
-  }
-
-  .summary-input,
-  .summary-output {
-    font-size: 14px;
-    border-radius: 14px;
-    min-height: 220px; /* keeps it usable on mobile */
-  }
-
-  .preview-actions {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .preview-actions button {
     font-size: 12px;
-    padding: 6px 10px;
+    margin: 0 auto 8px;
+    max-width: 95%;
+    line-height: 1.35;
   }
 
-  .action-buttons {
-    flex-wrap: wrap;
+  /* less gap between cards */
+  .summary-body {
     gap: 10px;
   }
 
-  .action-buttons button {
-    width: 100%;
-    max-width: 320px;
+  /* tighter card padding */
+  .summary-section {
+    padding: 12px;
+    border-radius: 18px;
+    position: relative; /* keep as parent for absolute buttons */
   }
 
+  /* textareas: smaller min-height + tighter spacing */
+  .summary-input,
+  .summary-output {
+    margin-top: 6px;
+    padding: 10px;
+    border-radius: 14px;
+    font-size: 14px;
+    min-height: 180px;
+  }
+
+  /* ✅ ICON-ONLY + BOTTOM-RIGHT (no overlap) */
+  .preview-actions {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 6;
+    margin: 0;
+  }
+
+  .preview-actions button {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 12px;
+    justify-content: center;
+    gap: 0;
+    font-size: 0; /* hide text */
+    line-height: 0;
+  }
+
+  .preview-actions button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* add space so buttons don't cover textarea/counter */
+  .summary-output {
+    padding-bottom: 62px;
+  }
+
+  /* optional: tighter info/action area */
   .info-box {
-    margin-top: 12px;
+    margin: 8px auto 0;
+    padding: 8px 12px;
     font-size: 12px;
-    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  .action-buttons {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .action-buttons button {
+    padding: 10px 14px;
+    font-size: 13px;
   }
 }
 
-/* Very small phones */
-@media (max-width: 420px) {
+/* extra small */
+@media (max-width: 360px) {
+  .summary-container {
+    padding: 12px 10px;
+  }
+
   .summary-title {
-    font-size: 22px;
-    letter-spacing: 1px;
+    font-size: 20px;
+  }
+
+  .summary-subtitle {
+    font-size: 11.5px;
+    margin-bottom: 6px;
+  }
+
+  .summary-section {
+    padding: 10px;
+  }
+
+  .preview-actions button {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .preview-actions button svg {
+    width: 15px;
+    height: 15px;
   }
 
   .summary-input,
   .summary-output {
-    min-height: 180px;
+    min-height: 165px;
+  }
+
+  .summary-output {
+    padding-bottom: 58px;
   }
 }
