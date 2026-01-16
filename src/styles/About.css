@@ -8,7 +8,9 @@
   background: linear-gradient(135deg, #B3E6F5, #D9F0FA);
   color: #003b44;
   transition: all 0.3s ease;
-  overflow: hidden; /* prevent page scroll */
+
+  /* keep sidebar fixed, content scrolls inside card */
+  overflow: hidden;
 }
 
 .about-container.dark {
@@ -25,6 +27,12 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+  /* prevent tiny screens from clipping the card */
+  min-width: 0;
+
+  /* ✅ prevent horizontal clipping/scroll issues */
+  overflow: hidden;
 }
 
 /* Make only this section scrollable */
@@ -37,8 +45,15 @@
   box-shadow: 0 12px 35px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
 
-  max-height: calc(100vh - 120px); /* 100vh minus top+bottom padding */
-  overflow-y: auto; /* scrollable content */
+  /* ✅ use dvh for mobile address bar behavior */
+  max-height: calc(100dvh - 120px);
+  overflow-y: auto;
+
+  /* nicer scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+
+  /* avoid text touching edges on narrow screens */
+  box-sizing: border-box;
 }
 
 .about-container.dark .about-section {
@@ -53,6 +68,7 @@
   font-size: 2.8rem;
   font-weight: 900;
   margin-bottom: 20px;
+  line-height: 1.15;
 }
 
 .about-title .highlight {
@@ -88,12 +104,14 @@
 .features-list {
   list-style: none;
   padding-left: 0;
+  margin: 0;
 }
 
 .features-list li {
   position: relative;
   padding-left: 25px;
   margin-bottom: 12px;
+  line-height: 1.55;
 }
 
 .features-list li::before {
@@ -126,22 +144,59 @@ a:hover {
 }
 
 /* ==============================
-   Responsive
+   Responsive (Mobile / Narrow)
 ============================== */
 @media (max-width: 768px) {
   .about-content {
-    padding: 40px 20px;
-  }
-
-  .about-title {
-    font-size: 2rem;
-  }
-
-  .section-heading {
-    font-size: 1.3rem;
+    padding: 18px 14px;
   }
 
   .about-section {
-    max-height: calc(100vh - 80px); /* reduce for smaller screens */
+    /* ✅ full-width card, less padding */
+    padding: 18px 16px;
+    border-radius: 18px;
+
+    /* ✅ more usable height on mobile */
+    max-height: calc(100dvh - 36px);
+
+    /* optional: make it feel less "floating" on tiny screens */
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+  }
+
+  .about-title {
+    /* ✅ scales better on narrow screens */
+    font-size: clamp(1.6rem, 5.5vw, 2.1rem);
+    margin-bottom: 12px;
+  }
+
+  .about-description {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .section-heading {
+    font-size: 1.2rem;
+    margin-top: 18px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+  }
+
+  .features-list li {
+    padding-left: 22px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Extra small (Fold / very narrow phones) */
+@media (max-width: 420px) {
+  .about-content {
+    padding: 14px 10px; /* ✅ FIXED */
+  }
+
+  .about-section {
+    padding: 16px 14px;
+    border-radius: 16px;
+    max-height: calc(100dvh - 28px);
   }
 }
