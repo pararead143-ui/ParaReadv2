@@ -28,14 +28,12 @@ const About = ({ darkMode, toggleDarkMode, setLoggedIn }) => {
 
           <h3 className="section-heading">Our Mission</h3>
           <p className="about-description">
-            We aim to enhance students’ reading experience and academic performance
+            We aim to enhance students reading experience and academic performance
             through innovative technology, making learning both effective and enjoyable.
           </p>
 
-          <h3 className="section-heading">Contact</h3>
-          <p className="about-description">Email: <a href="mailto:support@pararead.com">support@pararead.com</a></p>
-          <p className="about-description">Website: <a href="https://www.pararead.com" target="_blank">www.pararead.com</a></p>
-        </div>
+        
+        </div>*/
       </div>
     </div>
   );
