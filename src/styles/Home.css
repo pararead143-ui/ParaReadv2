@@ -1,12 +1,22 @@
 /* ==============================
-   Whole screen layout
+   Whole screen layout (ZOOM-SAFE + SIDEBAR STAYS)
+   ✅ locks the layout to viewport
+   ✅ prevents page/body scrolling
+   ✅ ONLY .home-content scrolls
    ============================== */
 .home-container {
   display: flex;
-  height: 100vh;
+
+  /* ✅ IMPORTANT: lock container to viewport height */
+  height: 100dvh;
+  min-height: 100dvh;
+
   background-color: #B3E6F5;
   font-family: 'Segoe UI', sans-serif;
+
+  /* ✅ IMPORTANT: stop the whole page from scrolling */
   overflow: hidden;
+
   transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -17,27 +27,89 @@
 
 /* ==============================
    Right content area
+   ✅ ONLY THIS SCROLLS
    ============================== */
 .home-content {
   flex: 1;
-  padding: 60px 40px 20px 40px;
+
+  /* ✅ IMPORTANT: content gets its own scroll area */
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  /* ✅ scales with zoom + screen size */
+  padding: clamp(16px, 4vw, 60px) clamp(12px, 3vw, 40px) clamp(12px, 2vw, 20px);
+  padding-bottom: clamp(40px, 5vw, 60px);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  padding-bottom: 60px;
+  /* ✅ prevents children from forcing horizontal scroll on zoom */
+  min-width: 0;
 }
+
+/* ✅ safety: prevent horizontal overflow in zoom/narrow */
+.home-content * {
+  min-width: 0;
+}
+
+/* ==============================
+   Nice scrollbar for .home-content
+   (Chrome/Edge/Safari + Firefox)
+============================== */
+
+/* Firefox */
+.home-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 79, 90, 0.45) rgba(0, 0, 0, 0);
+}
+
+/* Chrome / Edge / Safari */
+.home-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.home-content::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 10px 0;              /* adds top/bottom breathing space */
+  border-radius: 999px;
+}
+
+.home-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 79, 90, 0.35);
+  border-radius: 999px;
+  border: 3px solid transparent; /* makes it look thinner */
+  background-clip: padding-box;
+}
+
+.home-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 79, 90, 0.55);
+}
+
+/* Dark mode tweak */
+.home-container.dark .home-content {
+  scrollbar-color: rgba(179, 230, 245, 0.35) rgba(0, 0, 0, 0);
+}
+
+.home-container.dark .home-content::-webkit-scrollbar-thumb {
+  background: rgba(179, 230, 245, 0.28);
+}
+
+.home-container.dark .home-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(179, 230, 245, 0.45);
+}
+
 
 /* ==============================
    Title
    ============================== */
 .home-title {
-  font-size: 44px;
-  letter-spacing: 4px;
+  font-size: clamp(24px, 3.6vw, 44px);
+  letter-spacing: clamp(1px, 0.4vw, 4px);
+
   font-weight: 700;
   color: #004f5a;
   margin-bottom: 10px;
@@ -54,11 +126,14 @@
    Subtitle / tips
    ============================== */
 .home-subtitle {
-  font-size: 14px;
+  font-size: clamp(12.5px, 1.2vw, 14px);
+
   margin-bottom: 25px;
   color: #004f5a;
   text-align: center;
-  max-width: 600px;
+
+  max-width: min(92%, 600px);
+
   position: relative;
 }
 
@@ -198,22 +273,28 @@
 }
 
 /* ==============================
-   Work Box
+   Work Box (ZOOM-SAFE HEIGHT)
    ============================== */
 .work-box {
-  width: 85%;
-  max-width: 850px;
-  height: 450px;
+  width: min(85%, 850px);
+
+  height: auto;
+  min-height: clamp(360px, 55vh, 450px);
+
   background-color: #e7f7fa;
   border: 3px solid #003b44;
   border-radius: 20px;
-  padding: 20px;
+
+  padding: clamp(12px, 2vw, 20px);
+
   display: flex;
   flex-direction: column;
   box-shadow: 0 15px 35px rgba(0,0,0,0.2);
   margin-bottom: 10px;
   transition: all 0.3s ease;
   position: relative;
+
+  min-width: 0;
 }
 
 .work-box:hover {
@@ -226,12 +307,6 @@
   border-color: #66c4d4;
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
-
-/* =========================================================
-   ✅ Copy/Download behavior
-   Desktop: top-right pills
-   Narrow: small floating icon buttons (like your reference)
-   ========================================================= */
 
 /* Desktop default */
 .preview-actions {
@@ -270,9 +345,9 @@
   height: 14px;
 }
 
-/* ✅ Prevent overlay on desktop too (top padding inside textarea) */
+/* ✅ Prevent overlay on desktop too */
 .work-box .text-input {
-  padding-top: 58px; /* space for top-right pills */
+  padding-top: 58px;
 }
 
 /* ==============================
@@ -283,12 +358,17 @@
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 18px;
+
+  font-size: clamp(15px, 1.4vw, 18px);
+
   color: #003b44;
   outline: none;
   resize: none;
   padding: 12px;
   line-height: 1.6;
+
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 
 .text-input.dark {
@@ -312,10 +392,11 @@
    ============================== */
 .action-buttons-right {
   display: flex;
+  flex-wrap: wrap;
+
   justify-content: flex-end;
   gap: 20px;
-  width: 85%;
-  max-width: 850px;
+  width: min(85%, 850px);
   margin: 10px 0 25px 0;
 }
 
@@ -341,8 +422,7 @@
    Info box
    ============================== */
 .info-box {
-  width: 85%;
-  max-width: 850px;
+  width: min(85%, 850px);
   padding: 14px 20px;
   border-radius: 16px;
   border: 2px solid #003b44;
@@ -423,28 +503,28 @@
 }
 
 /* ==============================
-   Responsive
+   Responsive (keep your existing behavior)
    ============================== */
 @media (max-width: 1024px) {
   .home-content {
-    padding: 44px 24px 18px 24px;
-    padding-bottom: 60px;
+    padding: clamp(18px, 4vw, 44px) clamp(14px, 3vw, 24px) clamp(12px, 2vw, 18px);
+    padding-bottom: clamp(40px, 5vw, 60px);
   }
 
   .home-title {
-    font-size: 36px;
-    letter-spacing: 3px;
+    font-size: clamp(22px, 4vw, 36px);
+    letter-spacing: clamp(1px, 0.35vw, 3px);
   }
 
   .work-box,
   .action-buttons-right,
   .info-box {
-    width: 92%;
-    max-width: 820px;
+    width: min(92%, 820px);
   }
 
   .work-box {
-    height: 420px;
+    height: auto;
+    min-height: clamp(340px, 55vh, 420px);
   }
 }
 
@@ -544,9 +624,7 @@
   .floating-shape.shape3 { width: 70px; height: 70px; }
 }
 
-/* ✅ Apply to ALL narrow viewports (Fold, small phones, narrow desktop windows) */
 @media (max-width: 520px) {
-  /* put Copy/Download bottom-right and make them small circular icons */
   .preview-actions {
     top: auto;
     right: 12px;
@@ -571,10 +649,9 @@
     height: 18px;
   }
 
-  /* reserve space at bottom so textarea never gets covered by floating buttons */
   .work-box .text-input {
-    padding-top: 14px;     /* no need to reserve top anymore */
-    padding-bottom: 78px;  /* space for 2 floating buttons */
+    padding-top: 14px;
+    padding-bottom: 78px;
   }
 }
 
@@ -616,7 +693,6 @@
   }
 }
 
-/* Extra tiny */
 @media (max-width: 360px) {
   .preview-actions .preview-btn {
     width: 34px;
